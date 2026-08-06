@@ -29,6 +29,7 @@ class LoginView(APIView):
                 "refresh":str(refresh),
                 "access":str(refresh.access_token),
                 "role":user.role,
+                "email": user.email,
             })
 
         return Response(
@@ -72,7 +73,8 @@ class CompanyRegisterView(APIView):
             return Response({
                 "refresh":str(refresh),
                 "access":str(refresh.access_token),
-                "role":user.role
+                "role":user.role,
+                "email": user.email,
             },status=201)
 
 
@@ -97,5 +99,6 @@ class BuyerRegisterView(APIView):
         return Response({
             "refresh":str(refresh),
             "access":str(refresh.access_token),
-            "role":user.role
+            "role":user.role,
+            "email": user.email,
         },status=201)

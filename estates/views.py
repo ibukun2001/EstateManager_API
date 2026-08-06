@@ -215,10 +215,10 @@ class CompanyDashboardView(APIView):
 class EstateDetailView(APIView):
     permission_classes=[IsAuthenticated]
 
-    def get(self,request,pk):
+    def get(self,request,id):
         estate=get_object_or_404(
             Estate,
-            pk=pk,
+            id=id,
             company=request.user.company
         )
 
