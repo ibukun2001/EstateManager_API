@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "plots",
     "sales",
     "documents",
+    "services",
     "dashboard",
     'api',
 ]

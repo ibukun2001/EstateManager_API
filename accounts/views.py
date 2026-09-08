@@ -29,7 +29,8 @@ class LoginView(APIView):
                 "refresh":str(refresh),
                 "access":str(refresh.access_token),
                 "role":user.role,
-                "email": user.email,
+                "email":user.email,
+                "name":user.first_name,
             })
 
         return Response(
@@ -65,7 +66,8 @@ class CompanyRegisterView(APIView):
                 email=request.data.get("email"),
                 password=request.data.get("password"),
                 role="company",
-                company=company
+                company=company,
+                first_name=request.data.get("name","")
             )
 
             refresh=RefreshToken.for_user(user)
@@ -74,7 +76,8 @@ class CompanyRegisterView(APIView):
                 "refresh":str(refresh),
                 "access":str(refresh.access_token),
                 "role":user.role,
-                "email": user.email,
+                "email":user.email,
+                "name":user.first_name,
             },status=201)
 
 
@@ -93,12 +96,14 @@ class BuyerRegisterView(APIView):
         user=User.objects.create_user(
             email=request.data.get("email"),
             password=request.data.get("password"),
-            role="buyer"
+            role="buyer",
+            first_name=request.data.get("name","")
         )
         refresh=RefreshToken.for_user(user)
         return Response({
             "refresh":str(refresh),
             "access":str(refresh.access_token),
             "role":user.role,
-            "email": user.email,
+            "email":user.email,
+            "name":user.first_name,
         },status=201)

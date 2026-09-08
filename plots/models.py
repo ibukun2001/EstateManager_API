@@ -54,14 +54,21 @@ class Plot(gis_models.Model):
         max_digits=12,
         decimal_places=2
     )
-    PLOT_TYPES = (
-        ("Residential","Residential"),
-        ("Commercial","Commercial"),
-        ("Infrastructure","Infrastructure"),
+    description = models.TextField(
+        blank=True
+    )
+    LAND_USE_TYPES = (
+        ("Residential", "Residential"),
+        ("Commercial", "Commercial"),
+        ("Mixed Use", "Mixed Use"),
+        ("Agricultural", "Agricultural"),
+        ("Industrial", "Industrial"),
+        ("Institutional", "Institutional"),
+        ("Infrastructure", "Infrastructure"),
     )
     plot_type = models.CharField(
         max_length=30,
-        choices=PLOT_TYPES,
+        choices=LAND_USE_TYPES,
         default="Residential"
     )
     STATUS = (
