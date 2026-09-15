@@ -340,6 +340,7 @@ class PublicEstateListView(APIView):
                     "location": estate.location,
                     "description": estate.description,
                     "company": estate.company.name,
+                    "company_website": estate.company.website,
                     "image": estate.image.url if estate.image else None,
                     "total_plots": estate.total_plots,
                     "available_plots": estate.available_plots,
@@ -356,4 +357,5 @@ class PublicEstateDetailView(APIView):
         estate = get_object_or_404(Estate, pk=pk)
         data = EstateSerializer(estate).data
         data["company"] = estate.company.name
+        data["company_website"] = estate.company.website
         return Response(data)

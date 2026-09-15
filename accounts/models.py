@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.utils.text import slugify
 
 
 class UserManager(BaseUserManager):
@@ -29,10 +30,23 @@ class UserManager(BaseUserManager):
 
 class Company(models.Model):
     name=models.CharField(max_length=255)
+    slug=models.SlugField(max_length=255,unique=True,blank=True)
     email=models.EmailField(unique=True)
     phone=models.CharField(max_length=20,blank=True)
     address=models.TextField(blank=True)
+    website=models.URLField(blank=True)
     created_at=models.DateTimeField(auto_now_add=True)
+
+    def save(self,*args,**kwargs):
+        if not self.slug:
+            base_slug=slugify(self.name)[:240] or "company"
+            slug=base_slug
+            counter=2
+            while Company.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug=f"{base_slug}-{counter}"
+                counter+=1
+            self.slug=slug
+        super().save(*args,**kwargs)
 
     def __str__(self):
         return self.name

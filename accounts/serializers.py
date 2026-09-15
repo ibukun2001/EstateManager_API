@@ -9,9 +9,11 @@ class CompanySerializer(serializers.ModelSerializer):
         fields=[
             "id",
             "name",
+            "slug",
             "email",
             "phone",
-            "address"
+            "address",
+            "website"
         ]
 
 

@@ -31,6 +31,8 @@ class LoginView(APIView):
                 "role":user.role,
                 "email":user.email,
                 "name":user.first_name,
+                "company_slug":user.company.slug if user.company else None,
+                "company_name":user.company.name if user.company else None,
             })
 
         return Response(
@@ -78,6 +80,8 @@ class CompanyRegisterView(APIView):
                 "role":user.role,
                 "email":user.email,
                 "name":user.first_name,
+                "company_slug":company.slug,
+                "company_name":company.name,
             },status=201)
 
 
