@@ -85,6 +85,18 @@ class User(AbstractUser):
         blank=True
     )
 
+    # For buyers only: which company's site they arrived from, and
+    # optionally the specific page to send them back to. Persists on
+    # the account so the "back to website" link survives future logins.
+    referred_by_company=models.ForeignKey(
+        Company,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="referred_buyers"
+    )
+    referred_by_url=models.URLField(blank=True)
+
     created_at=models.DateTimeField(auto_now_add=True)
 
     objects=UserManager()
