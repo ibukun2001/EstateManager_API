@@ -3,6 +3,7 @@ import os
 import tempfile
 
 import geopandas as gpd
+import shapely
 from django.contrib.gis.geos import GEOSGeometry, GEOSException, Point
 from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404
@@ -129,7 +130,10 @@ class EstateListCreateView(APIView):
         if len(gdf) == 0:
             raise Exception("Boundary file contains no geometry.")
 
-        return GEOSGeometry(gdf.geometry.iloc[0].wkt, srid=4326)
+        # Shapefiles often carry a Z (elevation) dimension - our
+        # geometry column is 2D, so flatten it before storing.
+        geometry = shapely.force_2d(gdf.geometry.iloc[0])
+        return GEOSGeometry(geometry.wkt, srid=4326)
 
     def process_plots(self, file, estate):
         """
@@ -168,6 +172,7 @@ class EstateListCreateView(APIView):
                 geometry = list(geometry.geoms)[0]
             if geometry.geom_type != "Polygon":
                 continue
+            geometry = shapely.force_2d(geometry)
 
             props = row.to_dict()
             plot_number = find_attr(props, "plot_no", "plot_number", "plotno", "plot") \
